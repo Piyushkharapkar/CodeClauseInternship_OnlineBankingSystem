@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transaction History - Kharapkar Bank</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298); /* Deep blue gradient */
+            color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: #1b2838;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 2px solid #34c6eb; /* Light blue bottom border */
+        }
+
+        .navbar-custom a {
+            color: #f8f9fa !important;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: bold;
+            color: #34c6eb; /* Light blue text */
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 100px; /* Increased margin for visual comfort */
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 2.5rem; /* Increased font size for emphasis */
+            color: #34c6eb; /* Light blue heading */
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
+
+        .table-custom {
+            background-color: rgba(30, 60, 114, 0.9); /* Darker background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); /* Enhanced shadow */
+            overflow-x: auto;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(52, 198, 235, 0.2); /* Softer contrast for rows */
+        }
+
+        .table-striped td, .table-striped th {
+            color: #e3f2fd; /* Light blue for text */
+            font-weight: 500; /* Slightly lighter font weight */
+            padding: 15px; /* Reduced padding for a cleaner look */
+            border-bottom: 1px solid #34c6eb;
+        }
+
+        .table-striped th {
+            background-color: rgba(30, 114, 201, 0.3); /* Lighter blue for header */
+            font-weight: bold; /* Bold header for emphasis */
+        }
+
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .text-danger {
+            color: #e74c3c !important;
+        }
+
+        .custom-link {
+            color: #34c6eb;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .custom-link:hover {
+            color: #d1f0ff;
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <a class="navbar-brand" href="#">Kharapkar Bank</a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/transactions">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h2 class="text-center">Transaction History</h2>
+    <div class="table-responsive table-custom">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="transaction : ${transactions}">
+                <td th:text="${transaction.id}"></td>
+                <td th:text="${transaction.type}"></td>
+                <td th:text="${transaction.amount}"
+                    th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'text-success' : 'text-danger'">
+                    <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '₹' + transaction.amount : '-₹' + transaction.amount"></span>
+                </td>
+                <td th:text="${transaction.timestamp}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="text-center"><a href="/dashboard" class="custom-link">Back to Dashboard</a></p>
+    <div class="footer">
+        &copy; 2024 Kharapkar Bank. All Rights Reserved.
+    </div>
+</div>
+
+</body>
+</html>
